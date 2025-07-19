@@ -9,6 +9,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  book_details:
+    dependency: "direct main"
+    description:
+      path: "packages/features/book_details"
+      relative: true
+    source: path
+    version: "0.0.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -49,6 +56,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
+  dashboard:
+    dependency: "direct main"
+    description:
+      path: "packages/features/dashboard"
+      relative: true
+    source: path
+    version: "0.0.1"
   fake_async:
     dependency: transitive
     description:
@@ -75,6 +89,18 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_web_plugins:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
+  home:
+    dependency: "direct main"
+    description:
+      path: "packages/features/home"
+      relative: true
+    source: path
+    version: "0.0.1"
   leak_tracker:
     dependency: transitive
     description:
@@ -107,6 +133,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
+  local_db:
+    dependency: "direct main"
+    description:
+      path: "packages/libraries/core/local_db"
+      relative: true
+    source: path
+    version: "0.0.1"
   matcher:
     dependency: transitive
     description:
@@ -131,6 +164,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.15.0"
+  navigation:
+    dependency: "direct main"
+    description:
+      path: "packages/libraries/core/navigation"
+      relative: true
+    source: path
+    version: "0.0.1"
   path:
     dependency: transitive
     description:
@@ -139,6 +179,28 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.0"
+  plugin_platform_interface:
+    dependency: transitive
+    description:
+      name: plugin_platform_interface
+      sha256: "4820fbfdb9478b1ebae27888254d445073732dae3d6ea81f0b7e06d5dedc3f02"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.8"
+  remote:
+    dependency: "direct main"
+    description:
+      path: "packages/libraries/core/remote"
+      relative: true
+    source: path
+    version: "0.0.1"
+  search:
+    dependency: "direct main"
+    description:
+      path: "packages/features/search"
+      relative: true
+    source: path
+    version: "0.0.1"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -192,6 +254,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.2"
+  uni_links:
+    dependency: "direct main"
+    description:
+      name: uni_links
+      sha256: "051098acfc9e26a9fde03b487bef5d3d228ca8f67693480c6f33fd4fbb8e2b6e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.1"
+  uni_links_platform_interface:
+    dependency: transitive
+    description:
+      name: uni_links_platform_interface
+      sha256: "929cf1a71b59e3b7c2d8a2605a9cf7e0b125b13bc858e55083d88c62722d4507"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  uni_links_web:
+    dependency: transitive
+    description:
+      name: uni_links_web
+      sha256: "7539db908e25f67de2438e33cc1020b30ab94e66720b5677ba6763b25f6394df"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   vector_math:
     dependency: transitive
     description:
