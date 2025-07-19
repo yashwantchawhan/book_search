@@ -1,4 +1,5 @@
 import 'package:book_details/book_details_screen.dart';
+import 'package:dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:search/search_screen.dart';
 import 'nav_bar_screen.dart';
@@ -14,6 +15,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const SearchScreen());
       case '/details':
         return MaterialPageRoute(builder: (_) => const BookDetailsScreen());
+      case '/dashboard':
+        return MaterialPageRoute(builder: (_) => const DashboardScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => const Scaffold(

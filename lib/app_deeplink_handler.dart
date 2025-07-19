@@ -11,6 +11,7 @@ class AppDeeplinkHandler implements DeeplinkHandler {
     '/',
     '/search',
     '/details',
+    '/dashboard',
   ];
 
   @override
