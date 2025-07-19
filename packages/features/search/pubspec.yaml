@@ -10,7 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  design_system:
+    path: ../../libraries/design/design_system
 dev_dependencies:
   flutter_test:
     sdk: flutter
