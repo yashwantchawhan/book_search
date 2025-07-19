@@ -45,6 +45,7 @@ class _BookSearchAppState extends State<BookSearchApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Book Search',
       navigatorKey: AppRouter.navigatorKey,
       onGenerateRoute: AppRouter.onGenerateRoute,
