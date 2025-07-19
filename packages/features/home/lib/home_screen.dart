@@ -48,9 +48,7 @@ class HomeScreen extends StatelessWidget {
               title: book['title']!,
               author: book['author']!,
               onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Tapped on ${book['title']}')),
-                );
+                Navigator.of(context).pushNamed('/details');
               },
             );
           },

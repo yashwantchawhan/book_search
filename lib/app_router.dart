@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:home/home_screen.dart';
-import 'package:search/search_screen.dart';
 import 'package:book_details/book_details_screen.dart';
-
+import 'package:flutter/material.dart';
+import 'package:search/search_screen.dart';
+import 'nav_bar_screen.dart';
 
 class AppRouter {
   static final navigatorKey = GlobalKey<NavigatorState>();
@@ -10,7 +9,7 @@ class AppRouter {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
+        return MaterialPageRoute(builder: (_) =>  NavBarScreen());
       case '/search':
         return MaterialPageRoute(builder: (_) => const SearchScreen());
       case '/details':
@@ -24,4 +23,3 @@ class AppRouter {
     }
   }
 }
-
