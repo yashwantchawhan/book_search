@@ -10,8 +10,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  provider: ^6.1.5
+  flutter_bloc: 9.0.0
   design_system:
     path: ../../libraries/design/design_system
+  local_db:
+    path: ../../libraries/core/local_db
 
 dev_dependencies:
   flutter_test:

@@ -100,7 +100,12 @@ class _SearchScreenState extends State<SearchScreen> {
                     title: book.title,
                     author: book.author,
                     onTap: () {
-                      Navigator.of(context).pushNamed('/details');
+                      var key = book.key;
+                      var coverUrl = book.coverUrl;
+                      var author = book.author;
+                      Navigator.of(context).pushNamed(
+                        '/details?workKey=$key&coverUrl=$coverUrl&author=$author',
+                      );
                     },
                   ),
                   firstPageProgressIndicatorBuilder: (_) =>

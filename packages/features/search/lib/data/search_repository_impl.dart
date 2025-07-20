@@ -31,15 +31,7 @@ class SearchRepositoryImpl extends SearchRepository {
     final docs = List<Map<String, dynamic>>.from(data['docs'] ?? []);
 
     return docs.map<Book>((doc) {
-      return Book(
-        title: doc['title'] ?? 'Unknown',
-        author: (doc['author_name'] != null && doc['author_name'].isNotEmpty)
-            ? doc['author_name'][0]
-            : 'Unknown',
-        coverUrl: doc['cover_i'] != null
-            ? 'https://covers.openlibrary.org/b/id/${doc['cover_i']}-L.jpg'
-            : '',
-      );
+      return Book.fromJson(doc);
     }).toList();
   }
 }

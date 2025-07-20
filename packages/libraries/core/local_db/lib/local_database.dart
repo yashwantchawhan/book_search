@@ -17,7 +17,9 @@ class LocalDatabase {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT,
             author TEXT,
-            coverUrl TEXT
+            coverUrl TEXT,
+            key TEXT,
+            description TEXT
           )
         ''');
       },
@@ -31,6 +33,8 @@ class LocalDatabase {
         'title': book.title,
         'author': book.author,
         'coverUrl': book.coverUrl,
+        'key': book.key,
+        'description': book.description
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -58,11 +62,13 @@ class LocalDatabase {
     return result
         .map(
           (e) => Book(
-        title: e['title'] as String,
-        author: e['author'] as String,
-        coverUrl: e['coverUrl'] as String,
-      ),
-    )
+            title: e['title'] as String,
+            author: e['author'] as String,
+            coverUrl: e['coverUrl'] as String,
+            key: e['key'] as String,
+            description: e['description'] as String,
+          ),
+        )
         .toList();
   }
 }

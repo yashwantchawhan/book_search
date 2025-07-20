@@ -1,5 +1,6 @@
 import 'package:dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:home/di/home_screen_provider.dart';
 import 'package:home/home_screen.dart';
 import 'package:search/di/search_provider.dart';
 import 'package:search/search_screen.dart';
@@ -15,7 +16,7 @@ class _NavBarScreenState extends State<NavBarScreen> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = const [
-    HomeScreen(),
+    HomeScreenProvider(),
     SearchProvider(),
     DashboardScreen(),
   ];

@@ -1,9 +1,11 @@
 import 'package:design_system/book_card_shimmer.dart';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter/material.dart';
-// assuming you already have these:
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:home/presenatation/bloc/book_bloc.dart';
+import 'package:home/presenatation/bloc/book_event.dart';
+import 'package:home/presenatation/bloc/book_state.dart';
+import 'package:local_db/local_database.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,71 +15,89 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool isLoading = true;
-  List<Map<String, String>> books = [];
+  late BookBloc bookBloc;
 
   @override
   void initState() {
     super.initState();
-    _loadBooks();
-  }
-
-  void _loadBooks() {
-    // Simulate API call
-    Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        isLoading = false;
-        books = [
-          {
-            'thumbnail': 'https://covers.openlibrary.org/b/id/8226191-L.jpg',
-            'title': 'The Great Gatsby',
-            'author': 'F. Scott Fitzgerald',
-          },
-          {
-            'thumbnail': 'https://covers.openlibrary.org/b/id/8369251-L.jpg',
-            'title': 'The Guest List',
-            'author': 'Lucy Foley',
-          },
-          {
-            'thumbnail': 'https://covers.openlibrary.org/b/id/10515569-L.jpg',
-            'title': 'Project Hail Mary',
-            'author': 'Andy Weir',
-          },
-          {
-            'thumbnail': 'https://covers.openlibrary.org/b/id/8235116-L.jpg',
-            'title': 'The Silent Patient',
-            'author': 'Alex Michaelides',
-          },
-        ];
-      });
+    bookBloc = context.read<BookBloc>();
+    LocalDatabase.init().then((_) {
+      bookBloc.add(LoadBooksEvent());
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    return BlocConsumer<BookBloc, BookState>(
+      bloc: bookBloc,
+      buildWhen: (_, __) => true,
+      listenWhen: (_, __) => false,
+      listener: (_, __) {},
+      builder: (context, state) => _buildBody(context, state),
+    );
+  }
+
+  Widget _buildBody(BuildContext context, BookState state) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Book Search")),
-      body: ListView.separated(
-        padding: const EdgeInsets.all(8),
-        itemCount: isLoading ? 6 : books.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 8),
-        itemBuilder: (context, index) {
-          if (isLoading) {
-            return const BookCardShimmer();
-          } else {
-            final book = books[index];
-            return BookCard(
-              thumbnailUrl: book['thumbnail'] ?? "",
-              title: book['title']!,
-              author: book['author']!,
-              onTap: () {
-                Navigator.of(context).pushNamed('/details');
+      appBar: AppBar(
+        title: const Text("Book Search"),
+        centerTitle: true,
+      ),
+      body: Builder(
+        builder: (_) {
+          if (state is BooksLoading) {
+            return ListView.separated(
+              padding: const EdgeInsets.all(8),
+              itemCount: 6,
+              separatorBuilder: (_, __) => const SizedBox(height: 8),
+              itemBuilder: (_, __) => const BookCardShimmer(),
+            );
+          } else if (state is BooksLoaded) {
+            if (state.books.isEmpty) {
+              return const Center(
+                child: Text(
+                  "No books found in DB",
+                  style: TextStyle(fontSize: 16),
+                ),
+              );
+            }
+            return ListView.separated(
+              padding: const EdgeInsets.all(8),
+              itemCount: state.books.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 8),
+              itemBuilder: (context, index) {
+                final book = state.books[index];
+                return BookCard(
+                  thumbnailUrl: book.coverUrl,
+                  title: book.title,
+                  author: book.author,
+                  onTap: () {
+                    var key = book.key;
+                    var coverUrl = book.coverUrl;
+                    var author = book.author;
+                    Navigator.of(context).pushNamed(
+                      '/details?workKey=$key&coverUrl=$coverUrl&author=$author',
+                    );
+                  },
+                );
               },
             );
+          } else if (state is BooksError) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 32),
+                child: Text(
+                  state.message,
+                  style: const TextStyle(fontSize: 16, color: Colors.red),
+                ),
+              ),
+            );
+          } else {
+            // fallback
+            return const BookCardShimmer();
           }
         },
       ),
     );
   }
 }
-

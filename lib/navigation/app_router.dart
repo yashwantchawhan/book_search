@@ -1,3 +1,4 @@
+import 'package:book_details/book_detail_provider.dart';
 import 'package:book_details/book_details_screen.dart';
 import 'package:dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
@@ -9,13 +10,25 @@ class AppRouter {
   static final navigatorKey = GlobalKey<NavigatorState>();
 
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
+    final uri = Uri.tryParse(settings.name ?? '');
+
+    if (uri != null && uri.path == '/details') {
+      final workKey = uri.queryParameters['workKey'];
+      final coverUrl = uri.queryParameters['coverUrl'];
+      final author = uri.queryParameters['author'];
+      return MaterialPageRoute(
+        builder: (_) => BookDetailsProvider(
+          workKey: workKey,
+          coverUrl: coverUrl,
+          author: author,
+        ),
+      );
+    }
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (_) =>  const NavBarScreen());
       case '/search':
         return MaterialPageRoute(builder: (_) =>  const SearchProvider());
-      case '/details':
-        return MaterialPageRoute(builder: (_) => const BookDetailsScreen());
       case '/dashboard':
         return MaterialPageRoute(builder: (_) => const DashboardScreen());
       default:

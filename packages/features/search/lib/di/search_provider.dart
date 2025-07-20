@@ -1,8 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:remote/api_service_impl.dart';
 import 'package:search/data/search_repository_impl.dart';
 import 'package:search/presentation/bloc/search_bloc.dart';
 
@@ -15,14 +12,11 @@ class SearchProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dio = Dio();
     return BlocProvider(
       create: (_) => SearchBloc(
-        SearchRepositoryImpl(apiService: ApiServiceImpl(dio: dio)),
+        SearchRepositoryImpl(apiService: context.read()),
       ),
       child: const SearchScreen(),
     );
   }
 }
-
-final getIt = GetIt.instance;
