@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:dashboard/platform_channels.dart';
+import 'package:dashboard/sensor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -11,6 +13,10 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   bool _loading = true;
+  int? battery;
+  String? deviceName;
+  String? osVersion;
+  String? errorMessage;
 
   @override
   void initState() {
@@ -19,10 +25,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future<void> _loadData() async {
-    await Future.delayed(const Duration(seconds: 3));
     setState(() {
-      _loading = false;
+      _loading = true;
+      errorMessage = null;
     });
+
+    try {
+      final b = await PlatformChannels.getBatteryLevel();
+      final d = await PlatformChannels.getDeviceName();
+      final os = await PlatformChannels.getOSVersion();
+
+      setState(() {
+        battery = b;
+        deviceName = d;
+        osVersion = os;
+        _loading = false;
+      });
+    } catch (e) {
+      setState(() {
+        errorMessage = 'Failed to fetch data: $e';
+        _loading = false;
+      });
+    }
   }
 
   @override
@@ -70,25 +94,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ],
                   )
+                      : errorMessage != null
+                      ? Text(
+                    errorMessage!,
+                    style: const TextStyle(
+                        color: Colors.red, fontSize: 16),
+                  )
                       : Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       _InfoTile(
                         icon: Icons.battery_full,
                         label: 'Battery',
-                        value: '83%',
+                        value: '${battery ?? '-'}%',
                       ),
-                      SizedBox(height: 12),
+                      const SizedBox(height: 12),
                       _InfoTile(
                         icon: Icons.phone_android,
                         label: 'Device',
-                        value: 'Pixel 6 Pro',
+                        value: deviceName ?? '-',
                       ),
-                      SizedBox(height: 12),
+                      const SizedBox(height: 12),
                       _InfoTile(
                         icon: Icons.computer,
                         label: 'OS',
-                        value: 'Android 14',
+                        value: osVersion ?? '-',
                       ),
                     ],
                   ),
@@ -157,149 +187,6 @@ class _InfoTile extends StatelessWidget {
   }
 }
 
-// dummy screen just to navigate
 
-class SensorScreen extends StatefulWidget {
-  const SensorScreen({super.key});
 
-  @override
-  State<SensorScreen> createState() => _SensorScreenState();
-}
-
-class _SensorScreenState extends State<SensorScreen> {
-  bool _flashlightOn = false;
-  String _gyroX = "0.00";
-  String _gyroY = "0.00";
-  String _gyroZ = "0.00";
-  bool _loading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadSensors();
-  }
-
-  Future<void> _loadSensors() async {
-    await Future.delayed(const Duration(seconds: 2));
-    setState(() {
-      _loading = false;
-    });
-    // TODO: Start listening to gyroscope stream & platform channels here
-  }
-
-  void _toggleFlashlight() {
-    setState(() {
-      _flashlightOn = !_flashlightOn;
-    });
-    // TODO: Call platform channel to toggle flashlight here
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Sensor Info"),
-        centerTitle: true,
-      ),
-      body: _loading
-          ? Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: const [
-            CircularProgressIndicator(),
-            SizedBox(height: 16),
-            Text(
-              "Fetching sensor data...",
-              style: TextStyle(fontSize: 16),
-            )
-          ],
-        ),
-      )
-          : Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text(
-                      "Flashlight",
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 12),
-                    Switch.adaptive(
-                      value: _flashlightOn,
-                      onChanged: (_) => _toggleFlashlight(),
-                      activeColor: Colors.blueAccent,
-                    ),
-                    Text(
-                      _flashlightOn ? "ON" : "OFF",
-                      style: TextStyle(
-                          color: _flashlightOn
-                              ? Colors.green
-                              : Colors.grey),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text(
-                      "Gyroscope",
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 12),
-                    _gyroTile("X", _gyroX),
-                    const SizedBox(height: 8),
-                    _gyroTile("Y", _gyroY),
-                    const SizedBox(height: 8),
-                    _gyroTile("Z", _gyroZ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _gyroTile(String axis, String value) {
-    return Row(
-      children: [
-        Text(
-          "$axis-axis:",
-          style: const TextStyle(
-              fontWeight: FontWeight.w600, fontSize: 16),
-        ),
-        const SizedBox(width: 8),
-        Text(
-          value,
-          style: const TextStyle(fontSize: 16, color: Colors.black54),
-        ),
-      ],
-    );
-  }
-}
 
