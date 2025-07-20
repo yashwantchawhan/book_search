@@ -5,4 +5,5 @@ abstract class LocalDataSource {
   Future<bool> isBookSaved(Book book);
   Future<List<Book>> getAllBooks();
   Future<void> deleteBook(Book book) ;
+  Future<Book?> getBookByKey(String key) ;
 }

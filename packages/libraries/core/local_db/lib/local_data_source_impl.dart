@@ -22,4 +22,9 @@ class LocalDataSourceImpl extends LocalDataSource {
   Future<void> saveBook(Book book) async {
     return await LocalDatabase.saveBook(book);
   }
+
+  @override
+  Future<Book?> getBookByKey(String key) {
+    return LocalDatabase.getBookByKey(key);
+  }
 }

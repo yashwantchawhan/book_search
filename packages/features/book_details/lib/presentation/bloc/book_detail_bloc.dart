@@ -1,4 +1,5 @@
 
+import 'package:book_details/domain/book_detail_display_model.dart';
 import 'package:book_details/domain/book_details_repository.dart';
 import 'package:book_details/presentation/bloc/book_detail_event.dart';
 import 'package:book_details/presentation/bloc/book_detail_state.dart';
@@ -24,8 +25,27 @@ class BookDetailsBloc extends Bloc<BookDetailsEvent, BookDetailsState> {
     on<SaveBookEvent>((event, emit) async {
       emit(BookDetailsLoading());
       try {
-        final bookDetails = await localDataSource.saveBook(event.book);
-        emit(BookSavedState());
+        final alreadySaved = await localDataSource.isBookSaved(event.book);
+        if (!alreadySaved) {
+          await localDataSource.saveBook(event.book);
+        }
+        emit(BookDetailsLoaded(
+          bookDetail: BookDetailsDisplayModel(
+            book: event.book,
+            isSaved: true,
+          ),
+        ));
+      } catch (e) {
+        emit(BookSavedError(message: e.toString()));
+      }
+    });
+
+
+    on<DeleteBookEvent>((event, emit) async {
+      emit(BookDetailsLoading());
+      try {
+        await localDataSource.deleteBook(event.book);
+        emit(DeleteBookState());
       } catch (e) {
         emit(BookSavedError(message: e.toString()));
       }

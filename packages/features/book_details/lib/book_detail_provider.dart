@@ -26,7 +26,7 @@ class BookDetailsProvider extends StatelessWidget {
     }
     return BlocProvider(
       create: (_) => BookDetailsBloc(
-        BookDetailsRepositoryImpl(apiService: context.read()),
+        BookDetailsRepositoryImpl(apiService: context.read(), localDataSource: context.read()),
         context.read(),
       ),
       child:  BookDetailsScreen(

@@ -1,3 +1,4 @@
+import 'package:book_details/domain/book_detail_display_model.dart';
 import 'package:local_db/book.dart';
 
 abstract class BookDetailsState {}
@@ -5,7 +6,7 @@ abstract class BookDetailsState {}
 class BookDetailsLoading extends BookDetailsState {}
 
 class BookDetailsLoaded extends BookDetailsState {
-  final Book bookDetail;
+  final BookDetailsDisplayModel bookDetail;
 
   BookDetailsLoaded({required this.bookDetail});
 }
@@ -18,6 +19,10 @@ class BookDetailsError extends BookDetailsState {
 
 class BookSavedState extends BookDetailsState {
   BookSavedState();
+}
+
+class DeleteBookState extends BookDetailsState {
+  DeleteBookState();
 }
 
 class BookSavedError extends BookDetailsState {

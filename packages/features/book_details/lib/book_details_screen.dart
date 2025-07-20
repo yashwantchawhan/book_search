@@ -57,7 +57,9 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
       current is BookDetailsLoaded || current is BookDetailsError;
 
   void _onStateChangeListener(BuildContext context, BookDetailsState state) {
-
+     if(state is DeleteBookState) {
+       Navigator.of(context).pop();
+     }
   }
 
   _onStateChangeBuilder(BuildContext context, BookDetailsState state) {
@@ -69,7 +71,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
       body: Builder(
         builder: (_) {
           if (state is BookDetailsLoaded) {
-            final bookDetail = state.bookDetail;
+            final bookDetail = state.bookDetail.book;
+            final isSaved = state.bookDetail.isSaved;
             return SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -87,7 +90,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                             highlightColor: Colors.grey.shade100,
                             child: Container(
                               width: double.infinity,
-                              height: 100,
+                              height: 200,
                               color: Colors.white,
                             ),
                           ),
@@ -106,7 +109,21 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                   const SizedBox(height: 16),
                   SizedBox(
                     width: double.infinity,
-                    child: ElevatedButton.icon(
+                    child: isSaved ? ElevatedButton.icon(
+                      onPressed: () {
+                        _bloc.add(DeleteBookEvent(book: bookDetail));
+                      },
+                      icon: const Icon(Icons.delete),
+                      label: const Text('Delete Book'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        backgroundColor: Colors.redAccent,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ) : ElevatedButton.icon(
                       onPressed: () {
                         _bloc.add(SaveBookEvent(book: bookDetail));
                       },

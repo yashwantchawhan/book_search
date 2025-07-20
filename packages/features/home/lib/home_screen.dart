@@ -36,7 +36,9 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, state) => _buildBody(context, state),
     );
   }
-
+  Future<void> _refreshBooks() async {
+      bookBloc.add(LoadBooksEvent());
+  }
   Widget _buildBody(BuildContext context, BookState state) {
     return Scaffold(
       appBar: AppBar(
@@ -61,26 +63,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
             }
-            return ListView.separated(
-              padding: const EdgeInsets.all(8),
-              itemCount: state.books.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 8),
-              itemBuilder: (context, index) {
-                final book = state.books[index];
-                return BookCard(
-                  thumbnailUrl: book.coverUrl,
-                  title: book.title,
-                  author: book.author,
-                  onTap: () {
-                    var key = book.key;
-                    var coverUrl = book.coverUrl;
-                    var author = book.author;
-                    Navigator.of(context).pushNamed(
-                      '/details?workKey=$key&coverUrl=$coverUrl&author=$author',
-                    );
-                  },
-                );
-              },
+            return RefreshIndicator(
+              onRefresh: _refreshBooks,
+              child: ListView.separated(
+                padding: const EdgeInsets.all(8),
+                itemCount: state.books.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 8),
+                itemBuilder: (context, index) {
+                  final book = state.books[index];
+                  return BookCard(
+                    thumbnailUrl: book.coverUrl,
+                    title: book.title,
+                    author: book.author,
+                    onTap: () {
+                      var key = book.key;
+                      var coverUrl = book.coverUrl;
+                      var author = book.author;
+                      Navigator.of(context).pushNamed(
+                        '/details?workKey=$key&coverUrl=$coverUrl&author=$author',
+                      );
+                    },
+                  );
+                },
+              ),
             );
           } else if (state is BooksError) {
             return Center(

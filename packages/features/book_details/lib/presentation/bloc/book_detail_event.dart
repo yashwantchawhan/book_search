@@ -17,3 +17,9 @@ class SaveBookEvent extends BookDetailsEvent {
 
   SaveBookEvent({required this.book});
 }
+
+class DeleteBookEvent extends BookDetailsEvent {
+  final Book book;
+
+  DeleteBookEvent({required this.book});
+}

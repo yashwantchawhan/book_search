@@ -71,4 +71,27 @@ class LocalDatabase {
         )
         .toList();
   }
+
+  static Future<Book?> getBookByKey(String key) async {
+    final result = await _db!.query(
+      'books',
+      where: 'key = ?',
+      whereArgs: [key],
+      limit: 1,
+    );
+
+    if (result.isNotEmpty) {
+      final e = result.first;
+      return Book(
+        title: e['title'] as String,
+        author: e['author'] as String,
+        coverUrl: e['coverUrl'] as String,
+        key: e['key'] as String,
+        description: e['description'] as String,
+      );
+    }
+
+    return null; // not found
+  }
+
 }
