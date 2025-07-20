@@ -1,4 +1,4 @@
-import 'package:book_search/app_setup.dart';
+import 'package:book_search/di/app_setup.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:local_db/local_data_source.dart';

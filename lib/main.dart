@@ -1,6 +1,6 @@
-import 'package:book_search/app.dart';
-import 'package:book_search/app_setup.dart';
-import 'package:book_search/dependency_provider.dart';
+import 'package:book_search/application/app.dart';
+import 'package:book_search/di/app_setup.dart';
+import 'package:book_search/di/dependency_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 

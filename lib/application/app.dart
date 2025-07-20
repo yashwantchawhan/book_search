@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:book_search/app_deeplink_handler.dart';
-import 'package:book_search/app_router.dart';
+import 'package:book_search/navigation/app_deeplink_handler.dart';
+import 'package:book_search/navigation/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:uni_links/uni_links.dart';
 
