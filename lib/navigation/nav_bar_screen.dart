@@ -1,6 +1,7 @@
 import 'package:dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:home/home_screen.dart';
+import 'package:search/di/search_provider.dart';
 import 'package:search/search_screen.dart';
 
 class NavBarScreen extends StatefulWidget {
@@ -15,7 +16,7 @@ class _NavBarScreenState extends State<NavBarScreen> {
 
   final List<Widget> _pages = const [
     HomeScreen(),
-    SearchScreen(),
+    SearchProvider(),
     DashboardScreen(),
   ];
 

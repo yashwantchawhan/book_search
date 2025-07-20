@@ -1,6 +1,11 @@
-import 'package:design_system/book_card_shimmer.dart';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:local_db/book.dart';
+import 'package:search/presentation/bloc/search_bloc.dart';
+import 'package:search/presentation/bloc/search_events.dart';
+import 'package:search/presentation/bloc/search_states.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -10,61 +15,44 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final TextEditingController _searchController = TextEditingController();
-  bool isLoading = false;
-  List<Map<String, String>> books = [];
+  final _searchController = TextEditingController();
+  final PagingController<int, Book> _pagingController =
+  PagingController(firstPageKey: 1);
+  static const _pageSize = 20;
+
+  late SearchBloc _bloc;
+  String _currentQuery = '';
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _bloc = context.read<SearchBloc>();
+
+    _pagingController.addPageRequestListener((pageKey) {
+      _bloc.add(FetchBooksEvent(
+        query: _currentQuery,
+        page: pageKey,
+        limit: _pageSize,
+      ));
+    });
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
 
   void _onSearchQueryChanged(String query) {
-    if (query.isEmpty) {
-      setState(() {
-        books = [];
-        isLoading = false;
-      });
-      return;
-    }
-
-    setState(() {
-      isLoading = true;
-      books = [];
-    });
-
-    // Simulate API call
-    Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        isLoading = false;
-        books = [
-          {
-            'thumbnail': 'https://covers.openlibrary.org/b/id/8226191-L.jpg',
-            'title': 'The Great Gatsby',
-            'author': 'F. Scott Fitzgerald',
-          },
-          {
-            'thumbnail': 'https://covers.openlibrary.org/b/id/8369251-L.jpg',
-            'title': 'The Guest List',
-            'author': 'Lucy Foley',
-          },
-          {
-            'thumbnail': 'https://covers.openlibrary.org/b/id/10515569-L.jpg',
-            'title': 'Project Hail Mary',
-            'author': 'Andy Weir',
-          },
-          {
-            'thumbnail': 'https://covers.openlibrary.org/b/id/8235116-L.jpg',
-            'title': 'The Silent Patient',
-            'author': 'Alex Michaelides',
-          },
-        ];
-      });
-    });
+    _currentQuery = query;
+    _pagingController.refresh();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Search Books"),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text("Search Books")),
       body: Column(
         children: [
           Container(
@@ -87,25 +75,42 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
           Expanded(
-            child: ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              itemCount: isLoading ? 6 : books.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 8),
-              itemBuilder: (context, index) {
-                if (isLoading) {
-                  return const BookCardShimmer();
-                } else {
-                  final book = books[index];
-                  return BookCard(
-                    thumbnailUrl: book['thumbnail'] ?? "",
-                    title: book['title']!,
-                    author: book['author']!,
+            child: BlocListener<SearchBloc, SearchState>(
+              listener: (context, state) {
+                if (state is SearchLoadedState) {
+                  final isLastPage = state.isLastPage;
+                  final newItems = state.books;
+
+                  if (isLastPage) {
+                    _pagingController.appendLastPage(newItems);
+                  } else {
+                    final nextPageKey =
+                        (_pagingController.nextPageKey ?? 1) + 1;
+                    _pagingController.appendPage(newItems, nextPageKey);
+                  }
+                } else if (state is SearchErrorState) {
+                  _pagingController.error = state.errorMessage;
+                }
+              },
+              child: PagedListView<int, Book>(
+                pagingController: _pagingController,
+                builderDelegate: PagedChildBuilderDelegate<Book>(
+                  itemBuilder: (context, book, index) => BookCard(
+                    thumbnailUrl: book.coverUrl,
+                    title: book.title,
+                    author: book.author,
                     onTap: () {
                       Navigator.of(context).pushNamed('/details');
                     },
-                  );
-                }
-              },
+                  ),
+                  firstPageProgressIndicatorBuilder: (_) =>
+                  const Center(child: CircularProgressIndicator()),
+                  newPageProgressIndicatorBuilder: (_) =>
+                  const Center(child: CircularProgressIndicator()),
+                  noItemsFoundIndicatorBuilder: (_) =>
+                  const Center(child: Text('No books found')),
+                ),
+              ),
             ),
           ),
         ],

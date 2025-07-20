@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 class BookCard extends StatelessWidget {
   final String thumbnailUrl;
@@ -30,9 +30,21 @@ class BookCard extends StatelessWidget {
             children: [
               AspectRatio(
                 aspectRatio: 0.8,
-                child: Image.network(
-                  thumbnailUrl,
+                child: CachedNetworkImage(
+                  imageUrl: thumbnailUrl,
                   fit: BoxFit.cover,
+                  width: double.infinity,
+                  placeholder: (context, url) => Shimmer.fromColors(
+                    baseColor: Colors.grey.shade300,
+                    highlightColor: Colors.grey.shade100,
+                    child: Container(
+                      width: double.infinity,
+                      height: 150,
+                      color: Colors.white,
+                    ),
+                  ),
+                  errorWidget: (context, url, error) =>
+                  const Icon(Icons.error_outline),
                 ),
               ),
               const SizedBox(width: 8),
