@@ -20,7 +20,7 @@ class DependencyProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<ApiService>(create: (_) => _getIt<ApiServiceImpl>()),
+        Provider<ApiService>(create: (_) => _getIt<ApiService>()),
         Provider<LocalDataSource>(
           create: (_) => LocalDataSourceImpl(),
         ),
