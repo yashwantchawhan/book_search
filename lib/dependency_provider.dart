@@ -1,0 +1,33 @@
+import 'package:book_search/app_setup.dart';
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:local_db/local_data_source.dart';
+import 'package:local_db/local_data_source_impl.dart';
+import 'package:provider/provider.dart';
+import 'package:remote/api_service.dart';
+import 'package:remote/api_service_impl.dart';
+
+/// Provides global dependencies to the widget tree
+class DependencyProvider extends StatelessWidget {
+  const DependencyProvider({
+    super.key,
+    required this.builder,
+  });
+
+  final WidgetBuilder builder;
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        Provider<ApiService>(create: (_) => _getIt<ApiServiceImpl>()),
+        Provider<LocalDataSource>(
+          create: (_) => LocalDataSourceImpl(),
+        ),
+      ],
+      builder: (context, _) => builder(context),
+    );
+  }
+}
+
+final _getIt = GetIt.instance;

@@ -10,7 +10,7 @@ class AppRouter {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) =>  NavBarScreen());
+        return MaterialPageRoute(builder: (_) =>  const NavBarScreen());
       case '/search':
         return MaterialPageRoute(builder: (_) => const SearchScreen());
       case '/details':

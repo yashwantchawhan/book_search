@@ -1,7 +1,4 @@
 library remote;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'package:remote/api_service.dart';
+export 'package:remote/api_service_impl.dart';
