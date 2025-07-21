@@ -24,16 +24,7 @@ import CoreMotion
           print("🚀 Handling method: \(call.method)")
           switch call.method {
           case MethodChannelConstants.getBatteryLevel:
-               // UIDevice.current.isBatteryMonitoringEnabled = true
-                 result(Int(50))
-//                      let batteryLevel = UIDevice.current.batteryLevel
-//                      if batteryLevel < 0 {
-//                          result(FlutterError(code: "UNAVAILABLE",
-//                                              message: "Battery info not available",
-//                                              details: nil))
-//                      } else {
-//                          result(Int(batteryLevel * 100))
-//                      }
+                result( UIDevice.current.batteryLevel)
           case MethodChannelConstants.getDeviceName:
               result(UIDevice.current.name)
           case MethodChannelConstants.getOSVersion:
