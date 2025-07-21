@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 
 class PlatformChannels {
-  static const MethodChannel _channel = MethodChannel('device_info_channel');
+  static const MethodChannel _channel = MethodChannel('com.example.book_search/device_info');
 
   static Future<int> getBatteryLevel() async {
     final int batteryLevel = await _channel.invokeMethod('getBatteryLevel');

@@ -10,7 +10,7 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
-    private val CHANNEL = "device_info_channel"
+    private val CHANNEL = "com.example.book_search/device_info"
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -37,7 +37,6 @@ class MainActivity : FlutterActivity() {
                     result.success(null)
                 }
                 "getGyroscopeData" -> {
-                    // Here you’d implement actual sensor reading if you want.
                     result.success(mapOf("x" to 0, "y" to 0, "z" to 0))
                 }
                 else -> {
