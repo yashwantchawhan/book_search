@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:home/domain/book_display_model.dart';
 import 'package:local_db/book.dart';
 
 abstract class BookState extends Equatable {
@@ -13,7 +14,7 @@ class BooksInitial extends BookState {}
 class BooksLoading extends BookState {}
 
 class BooksLoaded extends BookState {
-  final List<Book> books;
+  final List<BookDisplayModel> books;
 
   const BooksLoaded(this.books);
 

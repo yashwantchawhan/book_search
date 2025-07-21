@@ -53,6 +53,8 @@ dependencies:
     path: ./packages/features/dashboard
   book_details:
     path: ./packages/features/book_details
+  device_information:
+    path: ./plugins/device_information
 
 
 

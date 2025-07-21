@@ -1,3 +1,4 @@
+import 'package:device_information/device_information.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:local_db/local_data_source.dart';
@@ -18,8 +19,11 @@ class DependencyProvider extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<ApiService>(create: (_) => _getIt<ApiService>()),
+        Provider<PlatformService>(create: (_) => _getIt<PlatformService>()),
         Provider<LocalDataSource>(
-          create: (_) => LocalDataSourceImpl(),
+          create: (_) => LocalDataSourceImpl(
+
+          ),
         ),
       ],
       builder: (context, _) => builder(context),

@@ -1,4 +1,4 @@
-import 'package:dashboard/di/get_sensor_information_repository.dart';
+import 'package:dashboard/domain/get_sensor_information_repository.dart';
 import 'package:dashboard/domain/flash_light_usecase.dart';
 import 'package:dashboard/presentation/bloc/sensor_event.dart';
 import 'package:dashboard/presentation/bloc/sensor_state.dart';

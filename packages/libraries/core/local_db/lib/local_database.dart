@@ -93,5 +93,4 @@ class LocalDatabase {
 
     return null; // not found
   }
-
 }

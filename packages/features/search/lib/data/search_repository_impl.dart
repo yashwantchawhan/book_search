@@ -10,7 +10,7 @@ class SearchRepositoryImpl extends SearchRepository {
   @override
   Future<List<Book>> searchBook(String query, int page, int limit) async {
     const url =
-        '/search.json'; // endpoint only — baseUrl is handled by ApiService
+        '/search.json';
     final params = {
       'q': query,
       'page': page,

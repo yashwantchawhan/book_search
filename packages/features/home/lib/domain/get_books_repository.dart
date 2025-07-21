@@ -1,5 +1,5 @@
-import 'package:local_db/book.dart';
+import 'package:home/domain/book_display_model.dart';
 
 abstract class GetBooksRepository {
-  Future<List<Book>> getAllBookMarkedBooks() ;
+  Future<List<BookDisplayModel>> getAllBookMarkedBooks() ;
 }

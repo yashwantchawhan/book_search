@@ -72,12 +72,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) {
                   final book = state.books[index];
                   return BookCard(
-                    thumbnailUrl: book.coverUrl,
+                    thumbnailUrl: book.url,
                     title: book.title,
                     author: book.author,
                     onTap: () {
                       var key = book.key;
-                      var coverUrl = book.coverUrl;
+                      var coverUrl = book.url;
                       var author = book.author;
                       Navigator.of(context).pushNamed(
                         '/details?workKey=$key&coverUrl=$coverUrl&author=$author',
