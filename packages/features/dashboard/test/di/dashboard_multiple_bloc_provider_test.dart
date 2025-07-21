@@ -20,7 +20,7 @@ void main() {
   testWidgets(
       'DashboardMultipleBlocProvider provides DashboardBloc and SensorBloc and builds child',
           (tester) async {
-        final testKey = Key('test-child');
+        const testKey = Key('test-child');
 
         await tester.pumpWidget(
           Provider<PlatformService>.value(

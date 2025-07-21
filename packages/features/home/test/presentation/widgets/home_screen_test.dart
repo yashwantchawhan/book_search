@@ -66,7 +66,7 @@ void main() {
   });
 
   testWidgets('shows "No books found in DB" when BooksLoaded is empty', (tester) async {
-    when(() => mockBookBloc.state).thenReturn(BooksLoaded([]));
+    when(() => mockBookBloc.state).thenReturn(const BooksLoaded([]));
     when(() => mockBookBloc.stream).thenAnswer((_) => Stream.value(mockBookBloc.state));
     when(() => mockBookBloc.add(any())).thenReturn(null);
 
@@ -77,7 +77,7 @@ void main() {
   });
 
   testWidgets('shows error message when state is BooksError', (tester) async {
-    when(() => mockBookBloc.state).thenReturn(BooksError('error occurred'));
+    when(() => mockBookBloc.state).thenReturn(const BooksError('error occurred'));
     when(() => mockBookBloc.stream).thenAnswer((_) => Stream.value(mockBookBloc.state));
     when(() => mockBookBloc.add(any())).thenReturn(null);
 

@@ -6,10 +6,6 @@ import 'package:mocktail/mocktail.dart';
 import 'package:remote/api_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class MockApiService extends Mock implements ApiService {}
-
-class MockLocalDataSource extends Mock implements LocalDataSource {}
-
 void main() {
   late BookDetailsRepositoryImpl repository;
   late MockApiService mockApiService;
@@ -106,3 +102,5 @@ void main() {
     );
   });
 }
+class MockApiService extends Mock implements ApiService {}
+class MockLocalDataSource extends Mock implements LocalDataSource {}

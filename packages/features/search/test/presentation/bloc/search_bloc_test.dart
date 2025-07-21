@@ -45,7 +45,7 @@ void main() {
           .thenAnswer((_) async => mockBooks);
       return SearchBloc(mockRepository);
     },
-    act: (bloc) => bloc.add(FetchBooksEvent(query: query, page: page, limit: limit)),
+    act: (bloc) => bloc.add(const FetchBooksEvent(query: query, page: page, limit: limit)),
     expect: () => [
       isA<SearchLoadedState>()
           .having((state) => state.books, 'books', mockBooks)
@@ -63,7 +63,7 @@ void main() {
           .thenThrow(Exception('Something went wrong'));
       return SearchBloc(mockRepository);
     },
-    act: (bloc) => bloc.add(FetchBooksEvent(query: query, page: page, limit: limit)),
+    act: (bloc) => bloc.add(const FetchBooksEvent(query: query, page: page, limit: limit)),
     expect: () => [
       isA<SearchErrorState>()
           .having((state) => state.errorMessage, 'message', contains('Something went wrong')),

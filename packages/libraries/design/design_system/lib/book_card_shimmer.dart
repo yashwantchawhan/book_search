@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
-
-import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
-
 class BookCardShimmer extends StatelessWidget {
   const BookCardShimmer({super.key});
 

@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:local_db/book.dart';
 
 abstract class SearchState {}

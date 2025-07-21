@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:home/domain/book_display_model.dart';
-import 'package:local_db/book.dart';
 
 abstract class BookState extends Equatable {
   const BookState();

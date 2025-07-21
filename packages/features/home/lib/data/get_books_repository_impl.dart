@@ -13,7 +13,7 @@ class GetBooksRepositoryImpl extends GetBooksRepository {
     return books
         .map(
           (book) => BookDisplayModel(
-            url: book.coverUrl ?? '',
+            url: book.coverUrl,
             title: book.title,
             author: book.author,
             key: book.key,
