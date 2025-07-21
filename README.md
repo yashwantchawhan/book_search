@@ -15,6 +15,10 @@ It also provides a dashboard to display device and sensor information and contro
 ### Screenshots
 
 
+https://github.com/user-attachments/assets/f5242dfd-00e6-4ba7-8a32-9df3928fa010
+
+
+
 ### Technical Features
 - **State Management**: Clean state management with flutter_bloc
 - **Image Caching**: Efficient image loading and caching
