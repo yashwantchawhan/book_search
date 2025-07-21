@@ -1,0 +1,47 @@
+name: Flutter CI/CD - Book Search
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    name: Flutter Build & Test - Book Search
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.5'
+          channel: stable
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Run Analyzer
+        run: flutter analyze
+
+      - name: Run All Tests
+        run: |
+          for dir in $(find . -type d -name test); do
+            echo "Running tests in $dir"
+            flutter test --coverage $dir || exit 1
+          done
+
+      - name: Build Android APK
+        run: flutter build apk --debug
+
+      - name: Build iOS App (Debug)
+        run: |
+          flutter build ios --debug --no-codesign
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/lcov.info
+          flags: book_search
