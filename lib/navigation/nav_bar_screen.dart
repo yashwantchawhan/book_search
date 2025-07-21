@@ -1,9 +1,7 @@
-import 'package:dashboard/dashboard_screen.dart';
+import 'package:dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:home/di/home_screen_provider.dart';
-import 'package:home/home_screen.dart';
 import 'package:search/di/search_provider.dart';
-import 'package:search/search_screen.dart';
 
 class NavBarScreen extends StatefulWidget {
   const NavBarScreen({super.key});
@@ -18,7 +16,7 @@ class _NavBarScreenState extends State<NavBarScreen> {
   final List<Widget> _pages = const [
     HomeScreenProvider(),
     SearchProvider(),
-    DashboardScreen(),
+    DashboardProvider(),
   ];
 
   void _onTabSelected(int index) {

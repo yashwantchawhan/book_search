@@ -12,7 +12,12 @@ dependencies:
     sdk: flutter
   lottie: ^2.7.0
   path: ^1.8.3
-
+  flutter_bloc: 9.0.0
+  provider: ^6.1.5
+  device_information:
+    path: ../../../plugins/device_information
+  design_system:
+    path: ../../libraries/design/design_system
 
 dev_dependencies:
   flutter_test:

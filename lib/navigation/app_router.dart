@@ -1,5 +1,6 @@
 import 'package:book_details/di/book_detail_provider.dart';
-import 'package:dashboard/dashboard_screen.dart';
+import 'package:dashboard/di/dashboard_provider.dart';
+import 'package:dashboard/presentation/widgets/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:home/di/home_screen_provider.dart';
 import 'package:search/di/search_provider.dart';
@@ -30,7 +31,7 @@ class AppRouter {
       case '/search':
         return MaterialPageRoute(builder: (_) =>  const SearchProvider());
       case '/dashboard':
-        return MaterialPageRoute(builder: (_) => const DashboardScreen());
+        return MaterialPageRoute(builder: (_) => const DashboardProvider());
       case '/home':
         return MaterialPageRoute(builder: (_) => const HomeScreenProvider());
       default:

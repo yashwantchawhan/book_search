@@ -4,9 +4,7 @@ import 'package:navigation/deeplink_handler.dart';
 
 class AppDeeplinkHandler implements DeeplinkHandler {
   AppDeeplinkHandler({required this.navigatorKey});
-
   final GlobalKey<NavigatorState> navigatorKey;
-
   static const List<String> _supportedPaths = [
     '/',
     '/search',
@@ -39,7 +37,6 @@ class AppDeeplinkHandler implements DeeplinkHandler {
         'originalDeeplink': deeplink,
       },
     );
-
     return true;
   }
 

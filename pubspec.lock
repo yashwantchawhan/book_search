@@ -118,6 +118,13 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  device_information:
+    dependency: transitive
+    description:
+      path: "plugins/device_information"
+      relative: true
+    source: path
+    version: "0.0.1"
   dio:
     dependency: "direct main"
     description:
