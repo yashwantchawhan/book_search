@@ -5,6 +5,8 @@ import CoreMotion
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
+    let motionManager = CMMotionManager()
+
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -24,20 +26,80 @@ import CoreMotion
           print("🚀 Handling method: \(call.method)")
           switch call.method {
           case MethodChannelConstants.getBatteryLevel:
-                result( UIDevice.current.batteryLevel)
+           let batteryLevel = UIDevice.current.batteryLevel
+           if batteryLevel < 0 {
+               result(0)
+           } else {
+               result(Int(batteryLevel * 100))
+           }
           case MethodChannelConstants.getDeviceName:
               result(UIDevice.current.name)
           case MethodChannelConstants.getOSVersion:
               result(UIDevice.current.systemVersion)
           case MethodChannelConstants.toggleFlashlight:
-              result(nil)
+              if let args = call.arguments as? [String: Any],
+                     let on = args["on"] as? Bool {
+                      self.toggleFlash(on: on)
+                      result("Flash set to \(on ? "on" : "off")")
+                  } else {
+                      result(FlutterError(code: "INVALID_ARGUMENT", message: "Missing or invalid 'on' parameter", details: nil))
+                  }
            case MethodChannelConstants.getGyroscopeData:
-              result(["x": 0, "y": 0, "z": 0])
+              self.getGyroData(result: result)
           default:
               result(FlutterMethodNotImplemented)
           }
       }
   }
+    
+    func getGyroData(result: @escaping FlutterResult) {
+            if motionManager.isGyroAvailable {
+                motionManager.gyroUpdateInterval = 1.0 / 50.0
+                motionManager.startGyroUpdates(to: OperationQueue.main) { [weak self] data, error in
+                    if let data = data {
+                        let gyroData: [String: Double] = [
+                            "x": data.rotationRate.x,
+                            "y": data.rotationRate.y,
+                            "z": data.rotationRate.z
+                        ]
+                        result(gyroData)
+                        self?.motionManager.stopGyroUpdates() // stop if single read
+                    } else if let error = error {
+                          print("⚠️ GYRO_ERROR.")
+                          let defaultData: [String: Double] = ["x": 0.0, "y": 0.0, "z": 0.0]
+                          result(defaultData)
+                    }
+                }
+            } else {
+                 print("⚠️ Gyroscope is not available on this device. Returning default values.")
+                 let defaultData: [String: Double] = ["x": 0.0, "y": 0.0, "z": 0.0]
+                 result(defaultData)
+
+            }
+        }
+
+    func toggleFlash(on: Bool) {
+        guard let device = AVCaptureDevice.default(for: .video), device.hasTorch else {
+            print("⚠️ Torch not available.")
+            return
+        }
+
+        do {
+            try device.lockForConfiguration()
+            if on {
+                try device.setTorchModeOn(level: 1.0)
+                print("✅ Torch turned ON")
+            } else {
+                device.torchMode = .off
+                print("✅ Torch turned OFF")
+            }
+            device.unlockForConfiguration()
+        } catch {
+            print("⚠️ Torch error: \(error)")
+        }
+    }
+
+
 }
 
 struct MethodChannelConstants {
