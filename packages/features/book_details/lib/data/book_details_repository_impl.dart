@@ -8,16 +8,17 @@ class BookDetailsRepositoryImpl extends BookDetailsRepository {
   final ApiService apiService;
   final LocalDataSource localDataSource;
 
-  BookDetailsRepositoryImpl({required this.apiService, required this.localDataSource});
+  BookDetailsRepositoryImpl(
+      {required this.apiService, required this.localDataSource});
 
   @override
-  Future<BookDetailsDisplayModel> fetchBookDetails(String workKey, String? coverUrl, String? author) async {
+  Future<BookDetailsDisplayModel> fetchBookDetails(
+      String workKey, String? coverUrl, String? author) async {
     final cachedBook = await localDataSource.getBookByKey(workKey);
     if (cachedBook != null) {
       return BookDetailsDisplayModel(book: cachedBook, isSaved: true);
     }
 
-    // If not in DB, make network call
     final url = '$workKey.json';
 
     final response = await apiService.get(
@@ -41,15 +42,13 @@ class BookDetailsRepositoryImpl extends BookDetailsRepository {
     final book = Book(
       key: workKey,
       title: json['title'] ?? 'No Title',
-      author: author ?? '', // optional or parse more fields if needed
+      author: author ?? '',
       coverUrl: coverUrl ?? '',
       description: desc ?? 'No description available.',
     );
 
-    // Save fetched book to DB
     await localDataSource.saveBook(book);
 
     return BookDetailsDisplayModel(book: book, isSaved: false);
   }
-
 }

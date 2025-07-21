@@ -7,8 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
 class BookDetailsScreen extends StatefulWidget {
-  final String workKey; // e.g. /works/OL27479W
-  final String? coverUrl; // optional cover
+  final String workKey;
+  final String? coverUrl;
   final String? author;
   const BookDetailsScreen({
     super.key,
@@ -82,8 +82,9 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                     ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: CachedNetworkImage(
+                          height: 300,
                           imageUrl: widget.coverUrl!,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fill,
                           width: double.infinity,
                           placeholder: (context, url) => Shimmer.fromColors(
                             baseColor: Colors.grey.shade300,
