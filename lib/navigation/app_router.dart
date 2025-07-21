@@ -1,6 +1,5 @@
 import 'package:book_details/di/book_detail_provider.dart';
 import 'package:dashboard/di/dashboard_provider.dart';
-import 'package:dashboard/presentation/widgets/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:home/di/home_screen_provider.dart';
 import 'package:search/di/search_provider.dart';

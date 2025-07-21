@@ -6,14 +6,16 @@ class BookDetailsLoading extends BookDetailsState {}
 
 class BookDetailsLoaded extends BookDetailsState {
   final BookDetailsDisplayModel bookDetail;
-
-  BookDetailsLoaded({required this.bookDetail});
+  BookDetailsLoaded({
+    required this.bookDetail,
+  });
 }
 
 class BookDetailsError extends BookDetailsState {
   final String message;
-
-  BookDetailsError({required this.message});
+  BookDetailsError({
+    required this.message,
+  });
 }
 
 class BookSavedState extends BookDetailsState {
@@ -26,6 +28,7 @@ class DeleteBookState extends BookDetailsState {
 
 class BookSavedError extends BookDetailsState {
   final String message;
-
-  BookSavedError({required this.message});
+  BookSavedError({
+    required this.message,
+  });
 }

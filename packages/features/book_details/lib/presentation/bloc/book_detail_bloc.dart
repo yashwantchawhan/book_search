@@ -1,4 +1,3 @@
-
 import 'package:book_details/domain/book_detail_display_model.dart';
 import 'package:book_details/domain/book_details_repository.dart';
 import 'package:book_details/presentation/bloc/book_detail_event.dart';
@@ -10,12 +9,13 @@ class BookDetailsBloc extends Bloc<BookDetailsEvent, BookDetailsState> {
   final BookDetailsRepository repository;
   final LocalDataSource localDataSource;
 
-  BookDetailsBloc(this.repository, this.localDataSource) : super(BookDetailsLoading()) {
+  BookDetailsBloc(this.repository, this.localDataSource)
+      : super(BookDetailsLoading()) {
     on<FetchBookDetailsEvent>((event, emit) async {
       emit(BookDetailsLoading());
       try {
-        final bookDetails =
-        await repository.fetchBookDetails(event.key,event.coverUrl, event.author);
+        final bookDetails = await repository.fetchBookDetails(
+            event.key, event.coverUrl, event.author);
         emit(BookDetailsLoaded(bookDetail: bookDetails));
       } catch (e) {
         emit(BookDetailsError(message: e.toString()));
@@ -39,7 +39,6 @@ class BookDetailsBloc extends Bloc<BookDetailsEvent, BookDetailsState> {
         emit(BookSavedError(message: e.toString()));
       }
     });
-
 
     on<DeleteBookEvent>((event, emit) async {
       emit(BookDetailsLoading());

@@ -4,5 +4,5 @@ class BookDetailsDisplayModel {
   final Book book;
   final bool isSaved;
 
-  BookDetailsDisplayModel({required this.book,required this.isSaved});
+  BookDetailsDisplayModel({required this.book, required this.isSaved});
 }

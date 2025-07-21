@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildBody(BuildContext context, BookState state) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Book Search"),
+        title: const Text("Bookmarks"),
         centerTitle: true,
       ),
       body: Builder(

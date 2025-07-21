@@ -91,19 +91,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               InfoTile(
                                 icon: Icons.battery_full,
                                 label: 'Battery',
-                                value: '${deviceDetailsModel.batteryLevel ?? '-'}%',
+                                value: '${deviceDetailsModel.batteryLevel}%',
                               ),
                               const SizedBox(height: 12),
                               InfoTile(
                                 icon: Icons.phone_android,
                                 label: 'Device',
-                                value: deviceDetailsModel.deviceName ?? '-',
+                                value: deviceDetailsModel.deviceName,
                               ),
                               const SizedBox(height: 12),
                               InfoTile(
                                 icon: Icons.computer,
                                 label: 'OS',
-                                value: deviceDetailsModel.osName ?? '-',
+                                value: deviceDetailsModel.osName,
                               ),
                             ],
                           ),
@@ -126,7 +126,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 child: SensorScreen(),
                               ),
                             ),
-                          );;
+                          );
                         },
                         icon: const Icon(Icons.sensors),
                         label: const Text("Go to Sensor Info"),
@@ -135,7 +135,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ],
               ),
-            );;
+            );
           } else if (state is DashboardErrorState) {
             return Center(
               child: Padding(

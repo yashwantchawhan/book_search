@@ -14,7 +14,7 @@ class BookDetailsScreen extends StatefulWidget {
     super.key,
     required this.workKey,
     this.coverUrl,
-    this.author
+    this.author,
   });
 
   @override
@@ -23,7 +23,6 @@ class BookDetailsScreen extends StatefulWidget {
 
 class _BookDetailsScreenState extends State<BookDetailsScreen> {
   late BookDetailsBloc _bloc;
-
   @override
   void initState() {
     super.initState();
@@ -43,7 +42,6 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
         state,
       ),
     );
-
   }
   bool _listenWhen(
       BookDetailsState previous,
@@ -61,7 +59,6 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
        Navigator.of(context).pop();
      }
   }
-
   _onStateChangeBuilder(BuildContext context, BookDetailsState state) {
     return Scaffold(
       appBar: AppBar(
@@ -101,7 +98,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                     const SizedBox(height: 16),
                   ],
                   Text(
-                    bookDetail.title ?? '',
+                    bookDetail.title,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -181,5 +178,4 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
       ),
     );
   }
-
 }
