@@ -20,12 +20,24 @@ jobs:
           flutter-version: '3.24.5'
           channel: stable
 
-      - name: Install Dependencies
+      # Install dependencies in the root
+      - name: Install Root Dependencies
         run: flutter pub get
+
+      # Install dependencies in all sub-packages
+      - name: Install Dependencies in All Packages
+        run: |
+          for dir in packages/features/*/; do
+            echo "Running pub get in $dir"
+            cd $dir
+            flutter pub get
+            cd - > /dev/null
+          done
 
       - name: Run Analyzer
         run: flutter analyze
 
+      # Run all tests in all packages
       - name: Run All Tests
         run: |
           for dir in $(find . -type d -name test); do
