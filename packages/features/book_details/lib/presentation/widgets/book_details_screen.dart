@@ -81,7 +81,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                         child: CachedNetworkImage(
                           height: 300,
                           imageUrl: widget.coverUrl!,
-                          fit: BoxFit.fill,
+                          fit: BoxFit.contain,
                           width: double.infinity,
                           placeholder: (context, url) => Shimmer.fromColors(
                             baseColor: Colors.grey.shade300,
