@@ -12,7 +12,8 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -20,42 +21,50 @@ jobs:
           flutter-version: '3.24.5'
           channel: stable
 
-      # Install dependencies in the root
       - name: Install Root Dependencies
         run: flutter pub get
 
-      # Install dependencies in all sub-packages
+      - name: Patch uni_links for AGP 8+
+        run: |
+          echo "📦 Patching uni_links build.gradle and manifest for AGP 8+"
+
+          gradle_file="$HOME/.pub-cache/hosted/pub.dev/uni_links-0.5.1/android/build.gradle"
+          manifest_file="$HOME/.pub-cache/hosted/pub.dev/uni_links-0.5.1/android/src/main/AndroidManifest.xml"
+
+          # Add namespace to build.gradle if missing
+          if grep -q 'namespace' "$gradle_file"; then
+            echo "✅ namespace already present in build.gradle"
+          else
+            sed -i '' '/android {/a\
+            namespace "name.avioli.unilinks"
+            ' "$gradle_file"
+            echo "✅ Added namespace to build.gradle"
+          fi
+
+          # Remove package attr from AndroidManifest.xml if present
+          if grep -q 'package="name.avioli.unilinks"' "$manifest_file"; then
+            sed -i '' 's/package="name.avioli.unilinks"//' "$manifest_file"
+            echo "✅ Removed package attribute from AndroidManifest.xml"
+          else
+            echo "✅ No package attribute found in AndroidManifest.xml"
+          fi
+
       - name: Install Dependencies in All Packages
         run: |
           for dir in packages/features/*/; do
-            echo "Running pub get in $dir"
+            echo "📦 Running pub get in $dir"
             cd $dir
             flutter pub get
             cd - > /dev/null
           done
 
-      # Patch uni_links namespace (CI only)
-      - name: Patch uni_links namespace for AGP 8+
-        run: |
-          echo "Patching uni_links build.gradle with namespace"
-          gradle_file="$HOME/.pub-cache/hosted/pub.dev/uni_links-0.5.1/android/build.gradle"
-          if grep -q 'namespace' "$gradle_file"; then
-            echo "namespace already present in uni_links, skipping."
-          else
-            sed -i '' '/android {/a\
-            namespace "name.goznak.uni_links"
-            ' "$gradle_file"
-            echo "namespace added to uni_links build.gradle"
-          fi
-
       - name: Run Analyzer
         run: flutter analyze
 
-      # Run all tests in all packages
       - name: Run All Tests
         run: |
           for dir in $(find . -type d -name test); do
-            echo "Running tests in $dir"
+            echo "🧪 Running tests in $dir"
             flutter test --coverage $dir || exit 1
           done
 
