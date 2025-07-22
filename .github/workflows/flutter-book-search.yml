@@ -34,6 +34,20 @@ jobs:
             cd - > /dev/null
           done
 
+      # Patch uni_links namespace (CI only)
+      - name: Patch uni_links namespace for AGP 8+
+        run: |
+          echo "Patching uni_links build.gradle with namespace"
+          gradle_file="$HOME/.pub-cache/hosted/pub.dev/uni_links-0.5.1/android/build.gradle"
+          if grep -q 'namespace' "$gradle_file"; then
+            echo "namespace already present in uni_links, skipping."
+          else
+            sed -i '' '/android {/a\
+            namespace "name.goznak.uni_links"
+            ' "$gradle_file"
+            echo "namespace added to uni_links build.gradle"
+          fi
+
       - name: Run Analyzer
         run: flutter analyze
 
